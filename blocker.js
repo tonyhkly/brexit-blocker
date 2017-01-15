@@ -11,26 +11,51 @@ var deleteText = function (needle, node) {
         }
     }
 
-    for (var i = node.childNodes.length; i--;) // loop through all child nodes
+    for (var i = node.childNodes.length; i--;) { // loop through all child nodes
         deleteText(needle, node.childNodes[i]);
+    }
 };
 
+//TODO only block on certain pages
 //TODO for greater efficency, have the regex search for multiple text at once
-var blockContent = function () {
-    var blockedWords = ["brexit", "trump", "ivanka", "melania", "jared kushner", "eric trump", "donald trump jr"];
+
+var blockText = function() {
+    //var blockedWords = ["brexit", "trump", "ivanka", "melania", "jared kushner", "eric trump", "donald trump jr"];
 
     deleteText("brexit");
     deleteText('trump');
 };
 
-window.addEventListener('load', function () {
+var blockImages = function() {
+    var images = document.getElementsByTagName("img");
+
+    for (var i = 0; i < images.length; i++) {
+        var alt = images[i].getAttribute('alt');
+        var src = images[i].getAttribute('src');
+
+        console.log(src);
+
+        var altContainsBrexit = alt && (alt.indexOf('brexit') != -1 || alt.indexOf('Brexit') != -1);
+        var srcContainsBrexit = src && (src.indexOf('brexit') != -1 || src.indexOf('Brexit') != -1);
+
+        var altContainsTrump = alt && alt.indexOf("Trump") != -1;
+        var srcContainsTrump = src && src.indexOf("trump") != -1 || src.indexOf("Trump") != -1;
+
+        if (altContainsBrexit || altContainsTrump || srcContainsBrexit || srcContainsTrump) {
+            images[i].remove();
+        }
+    }
+};
+
+var blockContent = function() {
+    blockText();
+    blockImages();
+};
+
+window.addEventListener('load', function() {
     blockContent();
 }, false);
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     blockContent();
 }, false);
-
-// 1 Find image with alt text or src with Trump
-// 2 Delete it
-// });
