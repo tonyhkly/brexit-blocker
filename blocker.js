@@ -7,6 +7,10 @@ var deleteText = function (needle, node) {
         var parts = node.nodeValue.split(new RegExp('(' + needle + ')', 'i'));
         if (parts.length > 1) { // if we found our needle
             var parent = node.parentNode;
+            var newSpan = document.createElement('span');
+            newSpan.className = 'textSearchFound';
+            parent.parentNode.appendChild(newSpan);
+
             parent.remove();
         }
     }
@@ -33,8 +37,6 @@ var blockImages = function() {
         var alt = images[i].getAttribute('alt');
         var src = images[i].getAttribute('src');
 
-        console.log(src);
-
         var altContainsBrexit = alt && (alt.indexOf('brexit') != -1 || alt.indexOf('Brexit') != -1);
         var srcContainsBrexit = src && (src.indexOf('brexit') != -1 || src.indexOf('Brexit') != -1);
 
@@ -56,6 +58,37 @@ window.addEventListener('load', function() {
     blockContent();
 }, false);
 
+var hardCodedDivRemovals = function() {
+    var $textSearchFound = $(".textSearchFound");
+
+    if ($textSearchFound) {
+        $textSearchFound.parents('.top-story__wrapper').remove();
+        $textSearchFound.parents('.sparrow-item').remove();
+        $textSearchFound.parents('.pukeko-item').remove();
+        $textSearchFound.parents('.nw-c-top-stories-primary__story').remove();
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     blockContent();
+    hardCodedDivRemovals();
 }, false);
+//$("div:contains('Trump')").parents('.top-story__wrapper').remove();
+//$("div:contains('Brexit')").parents('.top-story__wrapper').remove();
+//$("div:contains('brexit')").parents('.top-story__wrapper').remove();
+//
+//$("div:contains('Brexit')").parents('.sparrow-item').remove();
+//$("div:contains('brexit')").parents('.sparrow-item').remove();
+//$("div:contains('Trump')").parents('.sparrow-item').remove();
+//
+//$("div:contains('Brexit')").parents('.pukeko-item').remove();
+//$("div:contains('brexit')").parents('.pukeko-item').remove();
+//$("div:contains('Trump')").parents('.pukeko-item').remove();
+//
+//$("div:contains('Brexit')").parents('.pukeko-item').remove();
+//$("div:contains('brexit')").parents('.pukeko-item').remove();
+//$("div:contains('Trump')").parents('.pukeko-item').remove();
+//
+//$("div:contains('Brexit')").parents('.nw-c-top-stories-primary__story').remove();
+//$("div:contains('brexit')").parents('.nw-c-top-stories-primary__story').remove();
+//$("div:contains('Trump')").parents('.nw-c-top-stories-primary__story').remove();
