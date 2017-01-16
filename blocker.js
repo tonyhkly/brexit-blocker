@@ -41,7 +41,7 @@ var blockImages = function() {
         var srcContainsBrexit = src && (src.indexOf('brexit') != -1 || src.indexOf('Brexit') != -1);
 
         var altContainsTrump = alt && alt.indexOf("Trump") != -1;
-        var srcContainsTrump = src && src.indexOf("trump") != -1 || src.indexOf("Trump") != -1;
+        var srcContainsTrump = src && (src.indexOf("trump") != -1 || src.indexOf("Trump") != -1);
 
         if (altContainsBrexit || altContainsTrump || srcContainsBrexit || srcContainsTrump) {
             images[i].remove();
@@ -66,6 +66,8 @@ var hardCodedDivRemovals = function() {
         $textSearchFound.parents('.sparrow-item').remove();
         $textSearchFound.parents('.pukeko-item').remove();
         $textSearchFound.parents('.nw-c-top-stories-primary__story').remove();
+        $textSearchFound.parents('.story_card').remove();
+        $textSearchFound.parents('.fc-item__container').remove();
     }
 };
 
