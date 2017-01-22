@@ -3,9 +3,18 @@ var deleteText = function (needle, node) {
 
     if (node.nodeName == 'SCRIPT') return;
 
-    if (node.nodeType == 3) { // if node type is text, search for our needle
+/*    if (node.nodeName == 'DIV') {
+        console.log('FOUND DIV');
+    }
+
+    if (node.nodeName == 'A') {
+        console.log('FOUND A');
+    }   */
+
+    var isTextNode = node.nodeType == 3;
+    if (isTextNode) {
         var parts = node.nodeValue.split(new RegExp('(' + needle + ')', 'i'));
-        if (parts.length > 1) { // if we found our needle
+        if (parts.length > 1) {
             var parent = node.parentNode;
             var newSpan = document.createElement('span');
             newSpan.className = 'textSearchFound';
@@ -15,7 +24,7 @@ var deleteText = function (needle, node) {
         }
     }
 
-    for (var i = node.childNodes.length; i--;) { // loop through all child nodes
+    for (var i = node.childNodes.length; i--;) {
         deleteText(needle, node.childNodes[i]);
     }
 };
@@ -34,8 +43,8 @@ var blockImages = function() {
     var images = document.getElementsByTagName("img");
 
     for (var i = 0; i < images.length; i++) {
-        var alt = images[i].getAttribute('alt');
-        var src = images[i].getAttribute('src');
+        var alt = images[i].alt;
+        var src = images[i].src;
 
         var altContainsBrexit = alt && (alt.indexOf('brexit') != -1 || alt.indexOf('Brexit') != -1);
         var srcContainsBrexit = src && (src.indexOf('brexit') != -1 || src.indexOf('Brexit') != -1);
@@ -49,9 +58,41 @@ var blockImages = function() {
     }
 };
 
+var blockATags = function() {
+    var anchorTags = document.getElementsByTagName("a");
+
+    for (var i = 0; i < anchorTags.length; i++) {
+        var text = anchorTags[i].text;
+
+        var hrefContainsBrexit = text && (text.indexOf('brexit') != -1 || text.indexOf('Brexit') != -1);
+        var hrefContainsTrump = text && (text.indexOf("Trump") != -1 || text.indexOf("trump") != -1);
+
+        if (hrefContainsBrexit || hrefContainsTrump) {
+            anchorTags[i].remove();
+        }
+    }
+};
+
+var blockDivs = function() {
+    var divTags = document.getElementsByTagName("div");
+
+    for (var i = 0; i < divTags.length; i++) {
+        var dataId = divTags[i].getAttribute('data-id');
+
+        var hrefContainsBrexit = dataId && (dataId.indexOf('brexit') != -1 || dataId.indexOf('Brexit') != -1);
+        var hrefContainsTrump = dataId && (dataId.indexOf("Trump") != -1 || dataId.indexOf("trump") != -1);
+
+        if (hrefContainsBrexit || hrefContainsTrump) {
+            divTags[i].remove();
+        }
+    }
+};
+
 var blockContent = function() {
     blockText();
     blockImages();
+    blockATags();
+    blockDivs();
 };
 
 window.addEventListener('load', function() {
@@ -75,22 +116,3 @@ document.addEventListener('DOMContentLoaded', function() {
     blockContent();
     hardCodedDivRemovals();
 }, false);
-//$("div:contains('Trump')").parents('.top-story__wrapper').remove();
-//$("div:contains('Brexit')").parents('.top-story__wrapper').remove();
-//$("div:contains('brexit')").parents('.top-story__wrapper').remove();
-//
-//$("div:contains('Brexit')").parents('.sparrow-item').remove();
-//$("div:contains('brexit')").parents('.sparrow-item').remove();
-//$("div:contains('Trump')").parents('.sparrow-item').remove();
-//
-//$("div:contains('Brexit')").parents('.pukeko-item').remove();
-//$("div:contains('brexit')").parents('.pukeko-item').remove();
-//$("div:contains('Trump')").parents('.pukeko-item').remove();
-//
-//$("div:contains('Brexit')").parents('.pukeko-item').remove();
-//$("div:contains('brexit')").parents('.pukeko-item').remove();
-//$("div:contains('Trump')").parents('.pukeko-item').remove();
-//
-//$("div:contains('Brexit')").parents('.nw-c-top-stories-primary__story').remove();
-//$("div:contains('brexit')").parents('.nw-c-top-stories-primary__story').remove();
-//$("div:contains('Trump')").parents('.nw-c-top-stories-primary__story').remove();
