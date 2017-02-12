@@ -1,6 +1,6 @@
 {
-  "name": "Trump Brexit News Blocker",
-  "description": "Block mentions and images of Trump and Brexit on News websites",
+  "name": "Brexit Blocker",
+  "description": "Block mentions of Brexit on news websites",
   "version": "0.0.3",
   "browser_action": {
     "default_icon": "resources/icon.png"

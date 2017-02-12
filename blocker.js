@@ -33,10 +33,10 @@ var deleteText = function (needle, node) {
 //TODO for greater efficency, have the regex search for multiple text at once
 
 var blockText = function() {
-    //var blockedWords = ["brexit", "trump", "ivanka", "melania", "jared kushner", "eric trump", "donald trump jr"];
-
     deleteText("brexit");
-    deleteText('trump');
+    deleteText('article 50');
+    deleteText('remain vote');
+    deleteText('leave vote');
 };
 
 var blockImages = function() {
@@ -49,10 +49,10 @@ var blockImages = function() {
         var altContainsBrexit = alt && (alt.indexOf('brexit') != -1 || alt.indexOf('Brexit') != -1);
         var srcContainsBrexit = src && (src.indexOf('brexit') != -1 || src.indexOf('Brexit') != -1);
 
-        var altContainsTrump = alt && alt.indexOf("Trump") != -1;
-        var srcContainsTrump = src && (src.indexOf("trump") != -1 || src.indexOf("Trump") != -1);
+        var altContainsArticle50 = alt && (alt.indexOf("article50") || alt.indexOf("article-50") || alt.indexOf("article_50")) != -1;
+        var srcContainsArticle50 = src && (src.indexOf("article50") || src.indexOf("article-50") || src.indexOf("article_50")) != -1;
 
-        if (altContainsBrexit || altContainsTrump || srcContainsBrexit || srcContainsTrump) {
+        if (altContainsBrexit || altContainsArticle50 || srcContainsBrexit || srcContainsArticle50) {
             images[i].remove();
         }
     }
@@ -65,9 +65,9 @@ var blockATags = function() {
         var text = anchorTags[i].text;
 
         var hrefContainsBrexit = text && (text.indexOf('brexit') != -1 || text.indexOf('Brexit') != -1);
-        var hrefContainsTrump = text && (text.indexOf("Trump") != -1 || text.indexOf("trump") != -1);
+        var hrefContainsArticle50 = text && (text.indexOf("article50") || text.indexOf("article-50") || text.indexOf("article_50")) != -1;
 
-        if (hrefContainsBrexit || hrefContainsTrump) {
+        if (hrefContainsBrexit || hrefContainsArticle50) {
             anchorTags[i].remove();
         }
     }
@@ -80,9 +80,11 @@ var blockDivs = function() {
         var dataId = divTags[i].getAttribute('data-id');
 
         var hrefContainsBrexit = dataId && (dataId.indexOf('brexit') != -1 || dataId.indexOf('Brexit') != -1);
-        var hrefContainsTrump = dataId && (dataId.indexOf("Trump") != -1 || dataId.indexOf("trump") != -1);
+        var hrefContainsArticle50 = dataId && (dataId.indexOf("Article50") != -1 || dataId.indexOf("article50") != -1
+            || dataId.indexOf("Article-50") != -1 || dataId.indexOf("Article_50") != -1
+            || dataId.indexOf("article-50") != -1 || dataId.indexOf("article_50") != -1);
 
-        if (hrefContainsBrexit || hrefContainsTrump) {
+        if (hrefContainsBrexit || hrefContainsArticle50) {
             divTags[i].remove();
         }
     }
